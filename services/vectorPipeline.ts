@@ -1,9 +1,6 @@
 import { Restaurant } from "../types";
 import { VectorDocument, VectorMetadata } from "../types/vectorSchema";
 
-const embeddingModel = "text-embedding-004";
-const apiKey = process.env.GEMINI_API_KEY;
-
 export const cleanText = (input: string): string => {
   return input
     .replace(/<[^>]*>/g, " ")
@@ -40,31 +37,21 @@ const fallbackEmbedding = (text: string, dimensions = 128): number[] => {
 export const embedText = async (text: string): Promise<number[]> => {
   if (!text) return [];
 
-  if (!apiKey) {
-    return fallbackEmbedding(text);
-  }
-
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${embeddingModel}:embedContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: embeddingModel,
-          content: { parts: [{ text }] }
-        })
-      }
-    );
+    const response = await fetch("/api/embed", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text })
+    });
 
     if (!response.ok) {
       return fallbackEmbedding(text);
     }
 
     const data = await response.json();
-    const values = data?.embedding?.values as number[] | undefined;
+    const values = data?.values as number[] | undefined;
     if (Array.isArray(values) && values.length > 0) {
       return values;
     }
