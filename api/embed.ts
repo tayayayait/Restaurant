@@ -22,6 +22,8 @@ export const embed = async (req: Request, res: Response) => {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
+  const isKeyConfigured = Boolean(apiKey);
+  console.info('GEMINI_API_KEY configured for /api/embed:', isKeyConfigured);
   if (!apiKey) {
     res.status(500).json({ error: 'Server embedding key is not configured.' });
     return;

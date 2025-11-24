@@ -87,7 +87,10 @@ const createEmbedRoute = (apiKey: string) => async (req: any, res: any) => {
 };
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, '.', '');
+  const env = {
+    ...process.env,
+    ...loadEnv(mode, '.', '')
+  } as Record<string, string>;
   const embedRoute = createEmbedRoute(env.GEMINI_API_KEY ?? '');
 
   return {
