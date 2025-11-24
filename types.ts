@@ -6,6 +6,7 @@ export interface Restaurant {
   external_map_url: string;
   image_url: string;
   price_range: string; // $, $$, $$$, $$$$
+  rating?: number;
   reviews: Review[];
 }
 
@@ -23,11 +24,14 @@ export interface RecommendationResult {
   image_url: string; // Added to join with mock data
   category: string; // Added to join with mock data
   price_range: string;
-  address?: string;
+  address: string;
+  rating?: number;
+  keywords?: string[];
 }
 
 export interface SearchFilters {
   category?: string;
+  budget?: string;
   priceRange?: string;
   location?: string;
 }

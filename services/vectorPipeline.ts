@@ -1,23 +1,8 @@
 import { Restaurant } from "../types";
+import { VectorDocument, VectorMetadata } from "../types/vectorSchema";
 
 const embeddingModel = "text-embedding-004";
 const apiKey = process.env.GEMINI_API_KEY;
-
-export interface RestaurantMetadata {
-  id: string;
-  name: string;
-  category: string;
-  price_range: string;
-  address: string;
-}
-
-export interface VectorDocument {
-  id: string;
-  values: number[];
-  metadata: RestaurantMetadata;
-  normalizedText: string;
-  raw: Restaurant;
-}
 
 export const cleanText = (input: string): string => {
   return input
@@ -29,16 +14,16 @@ export const cleanText = (input: string): string => {
     .toLowerCase();
 };
 
-const buildRestaurantText = (restaurant: Restaurant): string => {
-  const reviews = restaurant.reviews.map((review) => cleanText(review.content)).join(" ");
-  const base = [
-    cleanText(restaurant.name),
-    cleanText(restaurant.category),
-    cleanText(restaurant.address),
-    reviews
-  ].filter(Boolean);
+const buildRestaurantText = (restaurant: Restaurant): { rawText: string; normalizedText: string } => {
+  const reviewContent = restaurant.reviews.map((review) => review.content).join(" ");
+  const rawText = [restaurant.name, restaurant.category, restaurant.address, reviewContent]
+    .filter(Boolean)
+    .join(" | ");
 
-  return base.join(" ");
+  return {
+    rawText,
+    normalizedText: cleanText(rawText)
+  };
 };
 
 const fallbackEmbedding = (text: string, dimensions = 128): number[] => {
@@ -92,15 +77,28 @@ export const embedText = async (text: string): Promise<number[]> => {
 };
 
 export const buildRestaurantDocument = async (restaurant: Restaurant): Promise<VectorDocument> => {
-  const normalizedText = buildRestaurantText(restaurant);
+  const { normalizedText, rawText } = buildRestaurantText(restaurant);
   const values = await embedText(normalizedText);
 
-  const metadata: RestaurantMetadata = {
+  const tags = buildTagsFromRestaurant(restaurant);
+  const keywords = Array.from(
+    new Set([
+      cleanText(restaurant.category),
+      cleanText(restaurant.price_range),
+      cleanText(restaurant.address),
+      ...tags.map((tag) => cleanText(tag.replace(/^#/, "")))
+    ])
+  ).filter(Boolean);
+
+  const metadata: VectorMetadata = {
     id: restaurant.id,
     name: restaurant.name,
     category: restaurant.category,
-    price_range: restaurant.price_range,
-    address: restaurant.address
+    priceRange: restaurant.price_range,
+    address: restaurant.address,
+    rating: restaurant.rating,
+    tags,
+    keywords
   };
 
   return {
@@ -108,6 +106,7 @@ export const buildRestaurantDocument = async (restaurant: Restaurant): Promise<V
     values,
     metadata,
     normalizedText,
+    rawText,
     raw: restaurant
   };
 };

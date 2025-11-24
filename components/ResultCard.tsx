@@ -15,6 +15,8 @@ export const ResultCard: React.FC<ResultCardProps> = ({ data, index }) => {
     return 'bg-slate-100 text-slate-800 border-slate-200';
   };
 
+  const displayTags = Array.from(new Set([...(data.tags ?? []), ...(data.keywords ?? [])])).slice(0, 6);
+
   return (
     <div 
       className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-full opacity-0 animate-fade-in-up transform hover:-translate-y-1"
@@ -34,12 +36,36 @@ export const ResultCard: React.FC<ResultCardProps> = ({ data, index }) => {
         </div>
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 pt-16">
             <h3 className="text-white text-xl font-bold truncate shadow-sm tracking-tight">{data.name}</h3>
-            <p className="text-slate-200 text-sm font-medium">{data.category} • {data.price_range}</p>
+            <p className="text-slate-200 text-sm font-medium">
+              {data.category} • {data.price_range}
+              {data.rating ? ` • ★ ${data.rating.toFixed(1)}` : ''}
+            </p>
         </div>
       </div>
 
       {/* Content Body */}
       <div className="p-5 flex-1 flex flex-col">
+        <div className="flex items-center justify-between text-sm text-slate-600 mb-3">
+          <div className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-indigo-500">
+              <path
+                fillRule="evenodd"
+                d="M10 2a6 6 0 00-6 6c0 4.418 6 10 6 10s6-5.582 6-10a6 6 0 00-6-6zm0 8a2 2 0 100-4 2 2 0 000 4z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="font-medium truncate" title={data.address}>{data.address}</span>
+          </div>
+          {data.rating && (
+            <div className="flex items-center gap-1 text-amber-600 font-semibold">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                <path d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l1.519 3.65a1.25 1.25 0 001.01.765l3.957.473c1.164.14 1.636 1.577.79 2.366l-2.986 2.81a1.25 1.25 0 00-.37 1.145l.796 3.88c.24 1.17-1.023 2.06-2.057 1.47l-3.48-1.996a1.25 1.25 0 00-1.228 0l-3.48 1.997c-1.034.589-2.297-.3-2.058-1.47l.797-3.88a1.25 1.25 0 00-.371-1.145l-2.986-2.81c-.845-.79-.373-2.226.79-2.366l3.958-.473a1.25 1.25 0 001.009-.765l1.52-3.65z" />
+              </svg>
+              <span>{data.rating.toFixed(1)}</span>
+            </div>
+          )}
+        </div>
+
         {/* AI Reason */}
         <div className="mb-4">
           <div className="flex items-center gap-2 mb-2">
@@ -57,7 +83,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ data, index }) => {
 
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {data.tags.map((tag, i) => (
+          {displayTags.map((tag, i) => (
             <span key={i} className="inline-block px-2.5 py-1 bg-slate-100 text-slate-600 text-xs rounded-lg font-medium border border-slate-200">
               {tag}
             </span>
