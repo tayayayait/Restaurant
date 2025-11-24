@@ -2,7 +2,13 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { MOCK_RESTAURANTS } from "./mockData";
 import { RecommendationResult } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const apiKey = process.env.GEMINI_API_KEY;
+
+if (!apiKey) {
+  console.error("GEMINI_API_KEY is not set. Please add it to your environment (e.g., .env.local).");
+}
+
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 // Define the response schema for strict JSON output
 const recommendationSchema: Schema = {
@@ -57,6 +63,10 @@ export const searchRestaurants = async (userQuery: string): Promise<Recommendati
   `;
 
   try {
+    if (!ai) {
+      throw new Error("GEMINI_API_KEY 환경 변수가 설정되지 않았습니다. .env.local에 키를 추가한 후 다시 시도해 주세요.");
+    }
+
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
