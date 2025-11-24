@@ -27,7 +27,9 @@ const hydrateResults = (results: RecommendationResult[]): RecommendationResult[]
         image_url: original.image_url,
         category: original.category,
         price_range: original.price_range,
-        address: original.address
+        address: original.address,
+        rating: original.rating,
+        keywords: result.keywords ?? []
       };
     })
     .filter((item): item is RecommendationResult => item !== null)
@@ -57,11 +59,13 @@ export const searchRestaurants = async (
       match_score,
       reason: buildReasonFromReviews(raw),
       tags: buildTagsFromRestaurant(raw),
+      keywords: result.metadata.keywords,
       external_url: raw.external_map_url,
       image_url: raw.image_url,
       category: raw.category,
       price_range: raw.price_range,
-      address: raw.address
+      address: raw.address,
+      rating: raw.rating
     };
   });
 

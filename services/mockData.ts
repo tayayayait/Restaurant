@@ -9,6 +9,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=The+Velvet+Fork",
     image_url: "https://picsum.photos/seed/velvet/800/600",
     price_range: "$$$",
+    rating: 4.8,
     reviews: [
       { content: "기념일에 방문했는데 분위기가 정말 깡패입니다. 조명이 어두워서 서로에게 집중하기 너무 좋아요." },
       { content: "트러플 리조또는 인생 리조또였어요. 다만 코스 요리라 시간은 좀 넉넉히 잡고 가야 합니다." },
@@ -23,6 +24,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=Spicy+House+No+1",
     image_url: "https://picsum.photos/seed/spicy/800/600",
     price_range: "$$",
+    rating: 4.5,
     reviews: [
       { content: "팀 회식으로 갔는데 원형 테이블이라 다 같이 얘기하기 좋았어요. 꿔바로우 양도 푸짐합니다." },
       { content: "경고: 진짜 맵습니다. 매운 거 못 드시는 분들은 백탕 필수 주문하세요." },
@@ -37,6 +39,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=Green+Leaf+Bistro",
     image_url: "https://picsum.photos/seed/green/800/600",
     price_range: "$$",
+    rating: 4.6,
     reviews: [
       { content: "비건인 친구랑 갔는데 메뉴 선택지가 많아서 너무 좋았어요. 글루텐 프리 옵션도 있습니다." },
       { content: "요가 끝나고 가볍게 브런치 먹기 딱 좋은 곳. 속이 편안해요." },
@@ -51,6 +54,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=Burger+and+Brews",
     image_url: "https://picsum.photos/seed/burger/800/600",
     price_range: "$",
+    rating: 4.2,
     reviews: [
       { content: "스포츠 경기 보면서 맥주 한잔하기 딱입니다. 다만 좀 시끄러워서 소개팅은 절대 금물." },
       { content: "서울에서 제일 맛있는 스매쉬 버거. 육즙이 줄줄 흐릅니다. 가성비 최고." },
@@ -65,6 +69,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=Omakase+Zen",
     image_url: "https://picsum.photos/seed/sushi/800/600",
     price_range: "$$$$",
+    rating: 4.9,
     reviews: [
       { content: "셰프님이 한 점 한 점 설명해주시는데 예술 작품을 먹는 기분입니다. 아주 조용하고 엄숙한 분위기." },
       { content: "아이들 데려가기는 힘든 곳입니다. 비즈니스 접대나 정말 중요한 날 추천." },
@@ -79,6 +84,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
     external_map_url: "https://maps.google.com/?q=Mama+Marias",
     image_url: "https://picsum.photos/seed/pasta/800/600",
     price_range: "$$",
+    rating: 4.4,
     reviews: [
       { content: "진짜 이탈리아 할머니가 해주는 맛. 양이 엄청 많아서 가족 외식으로 딱이에요." },
       { content: "입맛 까다로운 우리 아이들도 여기 크림 파스타는 흡입하네요." },

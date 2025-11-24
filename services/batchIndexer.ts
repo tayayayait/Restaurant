@@ -27,7 +27,8 @@ export const warmCollectionWithFilters = async (
   const filtered = filters
     ? restaurants.filter((restaurant) => {
         if (filters.category && restaurant.category !== filters.category) return false;
-        if (filters.priceRange && restaurant.price_range !== filters.priceRange) return false;
+        const targetBudget = filters.budget ?? filters.priceRange;
+        if (targetBudget && restaurant.price_range !== targetBudget) return false;
         if (filters.location && !restaurant.address.toLowerCase().includes(filters.location.toLowerCase())) return false;
         return true;
       })

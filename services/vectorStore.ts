@@ -1,11 +1,7 @@
-import { Restaurant } from "../types";
-import { RestaurantMetadata, VectorDocument } from "./vectorPipeline";
+import { SearchFilters } from "../types";
+import { VectorDocument, VectorMetadata } from "../types/vectorSchema";
 
-export interface QueryFilters {
-  category?: string;
-  priceRange?: string;
-  location?: string;
-}
+export type QueryFilters = SearchFilters;
 
 export interface QueryOptions {
   topK?: number;
@@ -13,7 +9,7 @@ export interface QueryOptions {
 }
 
 export interface VectorSearchResult {
-  metadata: RestaurantMetadata;
+  metadata: VectorMetadata;
   score: number;
   document: VectorDocument;
 }
@@ -67,9 +63,12 @@ export class InMemoryVectorStore {
     return results.sort((a, b) => b.score - a.score).slice(0, topK);
   }
 
-  private passesFilter(restaurant: Restaurant, filters: QueryFilters): boolean {
+  private passesFilter(restaurant: VectorDocument["raw"], filters: QueryFilters): boolean {
     if (filters.category && restaurant.category !== filters.category) return false;
-    if (filters.priceRange && restaurant.price_range !== filters.priceRange) return false;
+
+    const targetBudget = filters.budget ?? filters.priceRange;
+    if (targetBudget && restaurant.price_range !== targetBudget) return false;
+
     if (filters.location) {
       const normalizedAddress = restaurant.address.toLowerCase();
       if (!normalizedAddress.includes(filters.location.toLowerCase())) {
