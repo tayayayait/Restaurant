@@ -23,6 +23,13 @@ export interface RecommendationResult {
   image_url: string; // Added to join with mock data
   category: string; // Added to join with mock data
   price_range: string;
+  address?: string;
+}
+
+export interface SearchFilters {
+  category?: string;
+  priceRange?: string;
+  location?: string;
 }
 
 export enum SearchState {
